@@ -1,109 +1,86 @@
 package com.risenb.honourfamily.utils.imageloader;
 
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.risenb.honourfamily.R;
 
 /**
- * 作者:linzheng 日期:2016/11/17 功能:对通用逻辑封装
+ * <pre>
+ *     author : linzheng
+ *     e-mail : 1007687534@qq.com
+ *     time   : 2017/05/23
+ *     desc   : 图片加载的逻辑封装
+ *     version: 1.0
+ * </pre>
  */
-
-public abstract class ImageLoaderLogic implements ImageLoader {
-
-    /**
-     * 默认Options
-     */
-    public static ImageLoader.ImageLoaderOptions defaultOptions;
-
-    static {
-        defaultOptions = new ImageLoaderOptions();
-//        defaultOptions.loadingResId = R.drawable.loadingimage;
-//        defaultOptions.loadErrorResId = R.drawable.notimage;
-        defaultOptions.isFitXY = true;
-    }
-
-    @Override
-    public void loadImage(ImageView imageView, Uri imageUri) {
-        loadImage(imageView, imageUri, null);
-    }
-
-    @Override
-    public void loadImage(ImageView imageView, Uri imageUri, ImageLoaderOptions options) {
-        options = options == null ? defaultOptions : options;
-
-        if(options.isFitXY){
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        }
-
-        commonLoadImage(imageView, imageUri, options);
-    }
-
-    @Override
-    public void loadImage( ImageView imageView, String imageUrl) {
-        loadImage(imageView, imageUrl, null);
-    }
-
-    @Override
-    public void loadImage(ImageView imageView, String imageUrl, ImageLoaderOptions options) {
-        options = options == null ? defaultOptions : options;
-        Log.i("ImageLoader","ImageLoaderUtils loade image url = " + imageUrl);
-        if (TextUtils.isEmpty(imageUrl)) {
-            imageView.setImageResource(options.loadErrorResId);
-            return;
-        }
-
-        if(options.isFitXY){
-            if(!(imageView.getScaleType() == ImageView.ScaleType.FIT_XY))
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        }
-
-        commonLoadImage( imageView, getImageUrl(imageUrl), options);
-    }
-
-    @Override
-    public void loadImage2SimpleTarget(ImageView imageView, String imageUrl, ImageLoaderOptions options) {
-
-        options = options == null ? defaultOptions : options;
-
-        //检测图片URL
-        if (TextUtils.isEmpty(imageUrl)) {
-            imageView.setImageResource(options.loadErrorResId);
-            return;
-        }
-
-        imageUrl = getImageUrl(imageUrl);
-
-        commonLoadImage2SimpleTarget(imageView,imageUrl,options);
-
-    }
-
-    @Override
-    public void loadImage2SimpleTarget(ImageView imageView, String imageUrl) {
-        loadImage2SimpleTarget(imageView,imageUrl,null);
-    }
-
-
-
-    //每个不用框架加载图片的逻辑
-    abstract void commonLoadImage(ImageView imageView, String imageUrl, ImageLoaderOptions options);
-
-    //每个不用框架加载图片的逻辑
-    abstract void commonLoadImage(ImageView imageView, Uri imageUri, ImageLoaderOptions options);
-
-    //使用SimpleTarget加载图片
-    abstract void commonLoadImage2SimpleTarget(ImageView imageView,String imageUrl,ImageLoaderOptions options);
+public class ImageLoaderLogic {
 
     /**
-     * 对图片路径做拼接操作
+     * 根据Options 里面的参数 将图片加载到不同的地方
+     * @param imageView
+     * @param drawableRequestBuilder
+     * @param imageLoaderOptions
      */
-    public String getImageUrl(String imageUrl) {
-        if (imageUrl.startsWith("http"))
+    public void intoImageView(final ImageView imageView, DrawableRequestBuilder drawableRequestBuilder, final ImageLoaderOptions imageLoaderOptions){
+        if(imageLoaderOptions.isLoad2CircleImageView()){
+            drawableRequestBuilder.into(new SimpleTarget<GlideDrawable>() {
+                @Override
+                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    imageView.setImageDrawable(resource);
+                }
+
+                @Override
+                public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    imageView.setImageDrawable(errorDrawable);
+                }
+
+                @Override
+                public void onLoadStarted(Drawable placeholder) {
+                    imageView.setImageDrawable(placeholder);
+                }
+            });
+        }else if(imageLoaderOptions.getSimpleTarget()!=null){
+            drawableRequestBuilder.into(imageLoaderOptions.getSimpleTarget());
+        }
+        else{
+            drawableRequestBuilder.into(imageView);
+        }
+    }
+
+
+    /**
+     * 生成 ImageUrl
+     * @param context
+     * @param imageUrl
+     * @param options
+     * @return
+     */
+    public String generateImageUrl(Context context , String imageUrl, ImageLoaderOptions options){
+        if(options.isNetworkUrl()){
+            return generateNetworkUrl(context,imageUrl);
+        }else{
             return imageUrl;
-        else
-//            return .getString(R.string.service_host_address_image).concat(imageUrl);
-        return "";
+        }
     }
 
+    /**
+     * 生成网络 Url
+     * @param context
+     * @param url
+     * @return
+     */
+    private String generateNetworkUrl(Context context, String url) {
+        //处理绝对路径和相对路径
+        if(!url.startsWith("http")){
+            return context.getResources().getString(R.string.service_host_address_photo).concat(url);
+        }else{
+            return url;
+        }
+    }
 }

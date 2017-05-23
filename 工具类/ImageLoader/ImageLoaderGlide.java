@@ -1,79 +1,55 @@
 package com.risenb.honourfamily.utils.imageloader;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-
 
 /**
- * 实现GLide
+ * <pre>
+ *     author : linzheng
+ *     e-mail : 1007687534@qq.com
+ *     time   : 2017/05/23
+ *     desc   : ImageLoaeer Glide 的实现
+ *     version: 1.0
+ * </pre>
  */
-public class ImageLoaderGlide extends ImageLoaderLogic {
+public class ImageLoaderGlide implements ImageLoader {
 
-    @Override
-    void commonLoadImage(ImageView imageView, String imageUrl, ImageLoaderOptions options) {
-        buildDrawableRequestBuilder(imageView.getContext(),null,imageUrl,options).into(imageView);
+    ImageLoaderLogic mImageLoaderLogic;
 
-//        DrawableRequestBuilder<String> drawableRequestBuilder = Glide.with(imageView.getContext())
-//                .load(imageUrl)
-//                .placeholder(options.loadingResId)
-//                .error(options.loadErrorResId);
-//
-//        drawableRequestBuilder.into(imageView);
+
+    public ImageLoaderGlide(ImageLoaderLogic imageLoaderLogic) {
+        mImageLoaderLogic = imageLoaderLogic;
+    }
+
+    public ImageLoaderGlide() {
+        this(new ImageLoaderLogic());
     }
 
     @Override
-    void commonLoadImage(ImageView imageView, Uri imageUri, ImageLoaderOptions options) {
-
-        buildDrawableRequestBuilder(imageView.getContext(),imageUri,null,options).into(imageView);
-
-//        Glide.with(imageView.getContext())
-//                .load(imageUri)
-//                .placeholder(options.loadingResId)
-//                .error(options.loadErrorResId)
-//                .into(imageView);
+    public void loadImage(ImageView imageView, String imageUrl) {
+        loadImage(imageView,imageUrl,ImageLoaderOptions.sDefaultImageLoaderOptions);
     }
 
     @Override
-    void commonLoadImage2SimpleTarget(final ImageView imageView, String imageUrl, ImageLoaderOptions options) {
-        buildDrawableRequestBuilder(imageView.getContext(),null,imageUrl,options).into(new SimpleTarget<GlideDrawable>() {
-            @Override
-            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                imageView.setImageDrawable(resource);
-            }
-
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                imageView.setImageDrawable(errorDrawable);
-            }
-        });
-
-
-//        Glide.with(imageView.getContext())
-//                .load(imageUrl)
-//                .placeholder(options.loadingResId)
-//                .error(options.loadErrorResId)
-//                .into(new SimpleTarget<GlideDrawable>() {
-//                    @Override
-//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//                        imageView.setImageDrawable(resource);
-//                    }
-//
-//                    @Override
-//                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-//                        imageView.setImageDrawable(errorDrawable);
-//                    }
-//                });
+    public void loadImage(ImageView imageView, String imageUrl, ImageLoaderOptions options) {
+        if(imageView == null)return;
+        DrawableRequestBuilder builder = buildDrawableRequestBuilder(imageView.getContext(), null, mImageLoaderLogic.generateImageUrl(imageView.getContext(), imageUrl, options), options);
+        mImageLoaderLogic.intoImageView(imageView,builder,options);
     }
 
+    /**
+     * 构建 DrawableRequestBuilder
+     * @param context 上下文对象
+     * @param imageUri imageUri
+     * @param imageUrl imageUrl
+     * @param options options
+     * @return DrawableRequestBuilder
+     */
     private DrawableRequestBuilder buildDrawableRequestBuilder(Context context, Uri imageUri, String imageUrl, ImageLoaderOptions options) {
 
         DrawableTypeRequest drawableTypeRequest;
@@ -84,19 +60,18 @@ public class ImageLoaderGlide extends ImageLoaderLogic {
             drawableTypeRequest = Glide.with(context).load(imageUrl);
         }
 
-        DrawableRequestBuilder drawableRequestBuilder = drawableTypeRequest.placeholder(options.loadingResId).error(options.loadErrorResId);
+        DrawableRequestBuilder drawableRequestBuilder = drawableTypeRequest.placeholder(options.getLoadingResId()).error(options.getLoadErrorResId());
 
-        if (options.width != 0 && options.height != 0) {
-            drawableRequestBuilder.override(options.width,options.height);
+        if (options.getWidth() != 0 && options.getHeight() != 0) {
+            drawableRequestBuilder.override(options.getWidth(),options.getHeight());
         }
 
-        if(options.bitmapTransformation!=null){
-            drawableRequestBuilder.transform(options.bitmapTransformation);
+        if(options.getBitmapTransformation()!=null){
+            drawableRequestBuilder.transform(options.getBitmapTransformation());
         }
 
         return drawableTypeRequest;
 
     }
-
 
 }

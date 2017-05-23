@@ -1,8 +1,13 @@
 package com.risenb.honourfamily.utils.imageloader;
 
 /**
- * 图片加载工具类
- * Created by linzheng on 2016/3/28.
+ * <pre>
+ *     author : linzheng
+ *     e-mail : 1007687534@qq.com
+ *     time   : 2017/05/23
+ *     desc   : 图片加载类
+ *     version: 1.0
+ * </pre>
  */
 public class ImageLoaderUtils {
 
