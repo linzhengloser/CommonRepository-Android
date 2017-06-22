@@ -1,4 +1,4 @@
-package com.risenb.honourfamily.views;
+package com.risenb.honourfamily.views.listener;
 
 import android.view.View;
 
@@ -7,12 +7,12 @@ import android.view.View;
  *     author : linzheng
  *     e-mail : 1007687534@qq.com
  *     time   : 2017/06/16
- *     desc   : 网络可用的点击事件
+ *     desc   : check 单机事件的接口
  *     version: 1.0
  * </pre>
  */
-public interface OnCheckNetworkListener {
+public interface OnCheckListener {
 
-    void networkAvailable(View view);
+    void onAllChekSuccess(View view);
 
 }
