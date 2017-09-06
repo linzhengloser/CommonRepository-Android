@@ -8,6 +8,8 @@
 每个类中都有关于细节的详细注释。
 
 # 目录
+* 即时通讯
+    * [聊天列表](/及时通讯/聊天列表)
 * 自定义View
     * [NineGridLayout](/自定义View/NineGridLayout)
     * [SlideFrameLayout](/自定义View/SlideFrameLayout)
