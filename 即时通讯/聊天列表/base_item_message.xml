@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+    <!-- 用来显示左边的内容 -->
+    <LinearLayout
+            android:id="@+id/ll_start_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingLeft="15dp"
+            android:paddingRight="75dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="15dp"
+            android:orientation="horizontal">
+
+        <!-- 用户头像 -->
+        <include layout="@layout/item_base_head_image"/>
+
+        <!-- 内容布局 -->
+        <FrameLayout
+                android:id="@+id/fl_start_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_item_message_bg"/>
+
+    </LinearLayout>
+
+
+
+    <!-- 用来显示右边的内容 -->
+    <LinearLayout
+            android:id="@+id/ll_end_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingLeft="75dp"
+            android:paddingRight="15dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="15dp">
+
+        <!-- 内容布局 -->
+        <FrameLayout
+                android:id="@+id/fl_end_container"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_item_message_bg"
+                />
+
+        <!-- 用户头像 -->
+        <include layout="@layout/item_base_head_image"/>
+
+    </LinearLayout>
+
+</FrameLayout>
