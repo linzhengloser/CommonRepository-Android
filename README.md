@@ -17,3 +17,4 @@
     * [ImageLoader](/工具类/ImageLoader)
     * [ToastUtils](/工具类/ToastUtils)
     * [OnClickListener](/工具类/OnClickListener)
+    * [CacheUtils](/工具类/CacheUtils.java)
