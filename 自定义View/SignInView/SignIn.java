@@ -7,7 +7,7 @@ import android.graphics.Rect;
  *     author : linzheng
  *     e-mail : 1007687534@qq.com
  *     time   : 2017/10/25
- *     desc   : 签到 Mode
+ *     desc   : 签到 Model
  *     version: 1.0
  * </pre>
  */

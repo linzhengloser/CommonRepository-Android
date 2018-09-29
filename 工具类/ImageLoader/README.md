@@ -9,4 +9,4 @@ ImageLoader.getInstance().loadImage(circleImageView,imageUrl,ImageLoaderOptions.
 ```
 
 # 注意
-Glide4 中已经提供了类似的封装方式，所以可以直接使用 Glide 的封装。具体查看 Glide4 的文档。
+Glide v4 中已经提供了类似的封装方式，所以可以直接使用 Glide 的封装。具体查看 Glide v4 的文档。

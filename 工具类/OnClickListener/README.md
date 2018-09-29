@@ -1,4 +1,5 @@
 # 使用方法
+
 ``` java
 CheckClickListener checkNetworkClickListener = new CheckClickListener(this);
 view.setOnClickListener(checkNetworkclickListener);
@@ -11,6 +12,7 @@ public void onAllChekSuccess(View view) {
 ```
 
 # 扩展方法
+
 ``` java
 
 public class CustomCheck implements Check{
