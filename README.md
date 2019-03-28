@@ -23,3 +23,4 @@
     * [ToastUtils](/工具类/ToastUtils)
     * [OnClickListener](/工具类/OnClickListener)
     * [Language](/工具类/Language)
+    * [IntentUtils](/工具类/IntentUtils.java)
