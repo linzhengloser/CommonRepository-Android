@@ -20,8 +20,6 @@
     * [ScrollableLayout](/自定义View/ScrollableLayout)
     * [SignInView](/自定义View/SignInView)
 * 工具类
-    * [ImageLoader](/工具类/ImageLoader)
     * [ToastUtils](/工具类/ToastUtils)
     * [OnClickListener](/工具类/OnClickListener)
-    * [CacheUtils](/工具类/CacheUtils.java)
     * [Language](/工具类/Language)
